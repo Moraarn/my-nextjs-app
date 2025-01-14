@@ -1,3 +1,5 @@
+'use client'
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CalendarDateRangePicker } from '@/components/date-range-picker'
@@ -7,18 +9,16 @@ import { supabase } from '@/lib/supabase'
 async function getEnrollments() {
   const { data: enrollments } = await supabase
     .from('enrollments')
-    .select(`
-      *,
+    .select(`*,
       class:classes(
         title,
         start_time,
         duration_minutes,
         teacher:users(full_name)
-      )
-    `)
+      )`)
     .eq('status', 'enrolled')
     .order('created_at', { ascending: false })
-  
+
   return enrollments || []
 }
 
